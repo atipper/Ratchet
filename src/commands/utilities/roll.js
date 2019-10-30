@@ -5,14 +5,17 @@ module.exports = class RollCommand extends Command {
 	constructor(client) {
 		super(client, {
             name: 'roll',
-            aliases: ['r'],
+			aliases: ['r'],
+			format: '1d20',
 			group: 'utilities',
 			memberName: 'roll',
-            description: 'Rolls a die roll for 1d20.',
+            description: 'Rolls dice in an NdN format.',
 		});
 	}
 
-	run(message, {text}) {
-        return d20.roll(text)
+	run(message) {
+		var messageArgs = message.content.split(' ');
+		var rollArgs = String(messageArgs[1]).split('d');
+		message.say(`Rolled ${rollArgs[0]}d${rollArgs[1]}: ` + d20.roll(rollArgs[0] + 'd' + rollArgs[1]));
 	}
 };

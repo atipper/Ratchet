@@ -4,3 +4,7 @@ node_modules/
 # Ignore configs
 *.config.json
 config.json
+
+#sqlite
+settings.sqlite3
+*.sqlite
