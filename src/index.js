@@ -1,17 +1,27 @@
-const config = require('../storages/config.json')
-const Discord = require('discord.js')
-const client = new Discord.Client()
+const { CommandoClient } = require('discord.js-commando');
+const path = require('path');
+const config = require('../storages/config.json');
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}.`)
-})
+const client = new CommandoClient({
+	commandPrefix: '?',
+	owner: '357566425457623060',
+	invite: 'https://discord.gg/uGFgjqX',
+});
 
-client.on('message', msg => {
-    if (msg.content.startsWith(config.prefix)) {
-        if (msg.content === `${config.prefix}ping`) {
-            msg.reply('pong')
-        }
-    }
-})
+client.registry
+    .registerDefaultTypes()
+    .registerGroups([
+        ['utilities', 'Utility Commands'],
+    ])
+    .registerDefaultGroups()
+    .registerDefaultCommands()
+    .registerCommandsIn(path.join(__dirname, 'commands'));
 
-client.login(config.token)
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`);
+    console.log(client.user.id);
+});
+
+client.on('error', console.error);
+
+client.login(config.token);
