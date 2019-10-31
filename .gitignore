@@ -10,4 +10,4 @@ settings.sqlite3
 *.sqlite
 
 # Backup files
-*.bak
+# *.bak

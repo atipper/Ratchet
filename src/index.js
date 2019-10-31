@@ -1,7 +1,8 @@
-const { CommandoClient } = require('discord.js-commando');
+const { CommandoClient, SQLiteProvider } = require('discord.js-commando');
 const path = require('path');
-const sqlite = require('sqlite')
-const config = require('../storages/config.json');
+const fs = require('fs')
+const {token} = require('../storages/config.json');
+const guildConfig = require('../storages/guild.config.json')
 
 const client = new CommandoClient({
     commandPrefix: '?',
@@ -19,7 +20,8 @@ client.registry
     .registerDefaultCommands(
         commands = {
             eval: true,
-            help: true
+            help: true,
+            prefix: false
         }
     )
     .registerCommandsIn(path.join(__dirname, 'commands'));
@@ -42,14 +44,24 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('guildCreate', guild => {
-    
+    if (!guildConfig[guild.id]) {
+		guildConfig[guild.id] = {
+			name: guild.name,
+			prefix: client.commandPrefix
+		}
+	}
+	fs.writeFile('./storages/guild.config.json', JSON.stringify(guildConfig, null, 2), (err) => {
+        if (err) console.log(err)
+    })
+})
+
+client.on('guildDelete', (guild) => { // If the bot was removed on a server, proceed
+	delete guildConfig[guild.id]; // Deletes the Guild from guildConfig
+	fs.writeFile('./storages/guild.config.json', JSON.stringify(guildConfig, null, 2), (err) => {
+		if (err) console.log(err)
+	})
 })
 
 client.on('error', console.error);
 
-/* client.setProvider (
-    sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => Commando.SQLiteProvider(db))
-)
-.catch(console.error) */
-
-client.login(config.token);
+client.login(token);
