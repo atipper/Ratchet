@@ -1,15 +1,12 @@
-const Discord = require('discord.js')
 const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
 const Sequelize = require('sequelize')
 const path = require('path')
-const fs = require('fs')
-const {token} = require('../storages/config.json')
-const guildConfig = require('../storages/guild.config.json')
+const {token, user, password} = require('../storages/config.json')
 
 const client = new CommandoClient({
     commandPrefix: '?',
     owner: '357566425457623060',
-    invite: 'https://discord.gg/uGFgjqX',
+    invite: 'https://discord.gg/MyRwKnA',
 })
 
 client.registry
@@ -23,12 +20,12 @@ client.registry
         commands = {
             eval: false,
             help: true,
-            prefix: false
+            prefix: true
         }
     )
     .registerCommandsIn(path.join(__dirname, 'commands'))
 
-const sequelize = new Sequelize('database', 'user', 'password', {
+const sequelize = new Sequelize('database', user, password, {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
@@ -45,10 +42,11 @@ const sequelize = new Sequelize('database', 'user', 'password', {
  * )
  */
 const Tags = sequelize.define('tags', {
-	name: {
-		type: Sequelize.STRING,
-	},
-    guildID: Sequelize.INTEGER,
+	name: Sequelize.STRING,
+    guildID: {
+        type: Sequelize.INTEGER,
+        unique: true
+    },
     commandPrefix: Sequelize.STRING,
 })
 
@@ -61,6 +59,10 @@ client.once('ready', () => {
 })
 
 client.on('guildCreate', guild => {
+    
+})
+
+/* client.on('guildCreate', guild => {
     if (!guildConfig[guild.id]) {
 		guildConfig[guild.id] = {
 			name: guild.name,
@@ -70,14 +72,14 @@ client.on('guildCreate', guild => {
 	fs.writeFile('./storages/guild.config.json', JSON.stringify(guildConfig, null, 2), (err) => {
         if (err) console.log(err)
     })
-})
+}) */
 
-client.on('guildDelete', (guild) => { // If the bot was removed on a server, proceed
+/* client.on('guildDelete', (guild) => { // If the bot was removed on a server, proceed
 	delete guildConfig[guild.id]; // Deletes the Guild from guildConfig
 	fs.writeFile('./storages/guild.config.json', JSON.stringify(guildConfig, null, 2), (err) => {
 		if (err) console.log(err)
 	})
-})
+}) */
 
 client.on('error', console.error);
 

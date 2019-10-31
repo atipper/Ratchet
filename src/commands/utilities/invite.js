@@ -11,6 +11,6 @@ module.exports = class InviteCommand extends Command {
     }
 
     run(message) {
-        message.say(`${message.author}, please join our server and provide feedback!\nhttps://discord.gg/uGFgjqX\nYou can also invite me to your other servers with this URL:\nhttps://discordapp.com/api/oauth2/authorize?client_id=372565700562124800&permissions=470281303&scope=bot`);
+        message.say(`${message.author}, please join our server and provide feedback!\nhttps://discord.gg/MyRwKnA\nYou can also invite me to your other servers with this URL:\nhttps://discordapp.com/api/oauth2/authorize?client_id=372565700562124800&permissions=470281303&scope=bot`);
     }
 };

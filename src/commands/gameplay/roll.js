@@ -26,9 +26,9 @@ module.exports = class RollCommand extends Command {
 			var rollTotal = rollResult;
 			if (modArgs[1] > 0) {
 				rollTotal = Number(rollResult) + Number(modArgs[1]);
-				if (rollResult === 20 && rollargs[1].startsWith('20')) {
+				if (rollResult === 20 && rollArgs[1].startsWith('20')) {
 					message.say(`${message.author} :game_die:\n**Result:** ${rollArgs[0]}d${rollArgs[1]} (` + rollResult + `)\n**Total:** ` + rollTotal + `\n**A critical hit!**`);
-				} else if (rollResult === 1 && rollargs[1].startsWith('20')) {
+				} else if (rollResult === 1 && rollArgs[1].startsWith('20', true)) {
 					message.say(`${message.author} :game_die:\n**Result:** ${rollArgs[0]}d${rollArgs[1]} (` + rollResult + `)\n**Total:** ` + rollTotal + `\n**A critical failure!**`);
 				} else {
 					message.say(`${message.author} :game_die:\n**Result:** ${rollArgs[0]}d${rollArgs[1]} (` + rollResult + `)\n**Total:** ` + rollTotal);

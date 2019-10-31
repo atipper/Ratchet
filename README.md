@@ -9,11 +9,13 @@ npm install
 ```
 
 ## Create config.json
-Create a config.json file in ./storages which should have the following format:
+Create a config.json file in a storages directory which should have the following format:
 
 ```json
 {
-    "token": "your-token-here"
+	"token": "your-token-here",
+	"user": "sequelize-user",
+	"password": "sequelize-password"
 }
 ```
 

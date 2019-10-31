@@ -7,6 +7,8 @@ module.exports = class ClearCommand extends Command {
             format: 'X',
             group: 'utilities',
             memberName: 'clear',
+            clientPermissions: ['MANAGE_MESSAGES'],
+            guildOnly: true,
             description: 'Clears X messages in channel history.',
         });
     }
