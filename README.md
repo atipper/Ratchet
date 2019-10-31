@@ -1,4 +1,4 @@
-# Discord-Bot
+# Ratchet
 A bot utilitizing Commando for Discord.js to perform commands relating to Dungeons and Dragons 5th edition.
 
 ## Installation
