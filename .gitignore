@@ -5,6 +5,9 @@ node_modules/
 *.config.json
 config.json
 
-#sqlite
+# sqlite
 settings.sqlite3
 *.sqlite
+
+# Backup files
+*.bak

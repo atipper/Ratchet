@@ -13,14 +13,22 @@ client.registry
     .registerDefaultTypes()
     .registerGroups([
         ['utilities', 'Utility Commands'],
+        ['gameplay', 'Gameplay Commands'],
     ])
     .registerDefaultGroups()
-    .registerDefaultCommands()
+    .registerDefaultCommands(
+        commands = {
+            eval: true,
+            help: true
+        }
+    )
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     console.log(client.user.id);
+    // Set the client user's presence
+    client.user.setPresence({ game: { name: `D&D 5e | ${client.commandPrefix}help` }, status: 'online' })
 });
 
 // Create an event listener for new guild members
@@ -31,7 +39,11 @@ client.on('guildMemberAdd', member => {
     if (!channel) return;
     // Send the message, mentioning the member
     channel.send(`Welcome to the server, ${member}`);
-  });
+});
+
+client.on('guildCreate', guild => {
+    
+})
 
 client.on('error', console.error);
 
