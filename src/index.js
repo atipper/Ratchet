@@ -28,7 +28,7 @@ client.registry
 const sequelize = new Sequelize('database', user, password, {
 	host: 'localhost',
 	dialect: 'sqlite',
-	logging: false,
+	logging: true,
 	// SQLite only
 	storage: 'database.sqlite',
 })
@@ -45,7 +45,7 @@ const Tags = sequelize.define('tags', {
 	name: Sequelize.STRING,
     guildID: {
         type: Sequelize.INTEGER,
-        unique: true
+        unique: true,
     },
     commandPrefix: Sequelize.STRING,
 })

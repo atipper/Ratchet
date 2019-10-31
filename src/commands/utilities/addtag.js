@@ -1,5 +1,6 @@
 const {Command} = require('discord.js-commando')
-const Sequelize = require('sequelize')
+const {Tags} = require('../../index')
+const {Sequelize} = require('../../index')
 
 module.exports = class AddTagCommand extends Command {
     constructor(client) {
