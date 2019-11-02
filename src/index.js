@@ -1,31 +1,13 @@
 const {CommandoClient} = require('discord.js-commando')
 const path = require('path')
-const {token} = require('../storages/config.json')
+const {token} = require('../storages/config')
+const clans = require('./models/clans')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/ratchet', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+mongoose.connect('mongodb://localhost:27017/ratchet', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 })
-
-var db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', function() {
-    console.log('connected')
-})
-
-const Schema = mongoose.Schema
-const ObjectID = mongoose.Types.ObjectId()
- 
-const ClanSchema = new Schema({
-    _id: { type: String, index: false },
-    clanId: { type: Number, index: true, unique: true },
-    name: { type: String, default: '' },
-    prefix: { type: String, default: '?' },
-    date: { type: Date, default: Date.now },
-})
-
-var Clan = mongoose.model('Clan', ClanSchema);
 
 const client = new CommandoClient({
     commandPrefix: '?',
@@ -59,23 +41,17 @@ client.once('ready', () => {
 })
 
 client.on('guildCreate', guild => {
-    console.log(guild.id)
-    console.log(guild.name)
-    console.log(client.commandPrefix)
-    var newClan = new Clan(
-        {_id: ObjectID},
-        {clanId: guild.id},
-        {name: guild.name},
-        {prefix: client.commandPrefix},
-    )
-
-    newClan.save(function(err, newClan) {
-        if (err) return console.log(err)
+    console.log(guild)
+    const newGuild = new clans({
+        guildName: guild.name,
+        guildId: guild.id,
+        guildPrefix: client.commandPrefix
     })
+
+    newGuild.save().catch(err => console.log(err))
 })
 
 client.on('guildDelete', guild => {
-
 })
 
 client.on('error', console.error)
