@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const guildSchema = mongoose.Schema({
+    guildId: {type: Number, unique: true, index: true},
     guildName: String,
-    guildId: Number,
     guildPrefix: String,
     guildOwner: String,
 })

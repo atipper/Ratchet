@@ -4,7 +4,9 @@ const {token} = require('../storages/config')
 const clans = require('./models/clans')
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/ratchet', {
+mongoose.set('debug', false)
+
+mongoose.connect('mongodb://127.0.0.1:27017/ratchet', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -36,22 +38,25 @@ client.registry
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
     console.log(client.user.id)
-    // Set the client user's presence
     client.user.setPresence({ game: { name: `D&D 5e | ${client.commandPrefix}help` }, status: 'online' })
 })
 
 client.on('guildCreate', guild => {
-    console.log(guild)
     const newGuild = new clans({
         guildName: guild.name,
         guildId: guild.id,
-        guildPrefix: client.commandPrefix
+        guildPrefix: client.commandPrefix,
+        guildOwner: guild.owner,
     })
 
     newGuild.save().catch(err => console.log(err))
 })
 
-client.on('guildDelete', guild => {
+client.on('guildMemberRemove', member => {
+    if (member.id === client.user.id) {
+        var clan = clans.findOne({guildId: member.guild.id})
+        clan.remove().exec().catch(err => console.log(err))
+    }
 })
 
 client.on('error', console.error)
